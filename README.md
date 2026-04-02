@@ -1,14 +1,13 @@
-# Proyecto 1: Desacoplamiento de software: Principios
-# para gestionar y aislar dependencias - Programación 4
+# Proyecto 1: Desacoplamiento de software: Principios\para gestionar y aislar dependencias - Programación 4
 
 Juan Carlos Mejía Cano\
-Natalia Gallego Barrero
-Docente: Alejandro Rodas Vásquez
-Universidad Tecnológica de Pereira
+Natalia Gallego Barrero\
+Docente: Alejandro Rodas Vásquez\
+Universidad Tecnológica de Pereira\\
 
-13 de marzo de 2026
+13 de marzo de 2026\\
 
-# Proyecto: Sistema "NutriUTP"
+**Proyecto: Sistema "NutriUTP"**
 
 La cafetería estudiantil requiere un software para administrar la entrega de almuerzos
 diarios. El sistema debe gestionar un menú que cambia cada día, ofreciendo siempre una
