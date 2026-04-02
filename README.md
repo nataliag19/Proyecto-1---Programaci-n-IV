@@ -6,7 +6,7 @@ Natalia Gallego Barrero
 Docente: Alejandro Rodas Vásquez\
 Universidad Tecnológica de Pereira
 
-2 de abril del 2026
+4 de abril del 2026
 
 **Proyecto: Sistema "NutriUTP"**
 
