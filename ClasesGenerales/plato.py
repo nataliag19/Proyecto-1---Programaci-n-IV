@@ -1,9 +1,9 @@
 class Plato:
-    def __init__(self, args_plato):
-        self.nombre = args_plato.get('nombre', 'Plato Default')
-        self._precio_base = args_plato.get('precio', 1000)
-        self.es_vegetariano = args_plato.get('plato_veg', False)
-        self.cantidad = args_plato.get('cantidad', 1)
+    def __init__(self, nombre = "Plato Default", precio = 1000, veg = False, cantidad = 1):
+        self.nombre = nombre
+        self._precio_base = precio
+        self.es_vegetariano = veg
+        self.cantidad = cantidad
 
     def precio(self):
         return self._precio_base

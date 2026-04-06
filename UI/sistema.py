@@ -30,16 +30,15 @@ class SistemaNutriUTP:
             except ValueError:
                 precio_plato = 1000.0
             
-            plato_veg = input("Es un plato vegetariano (si/no): ").lower() == "si"
+            plato_veg = input("Es un plato vegetariano (si/no): ").strip().lower() == "si"
             cantidad_plato = input("Cantidad disponible de este plato: ")
             try:
                 cantidad_plato = int(cantidad_plato)
             except ValueError:
                 cantidad_plato = 1
             
-            dic_plato = {'nombre': nombre_plato, 'precio': precio_plato, 'plato_veg':plato_veg, 'cantidad':cantidad_plato}
 
-            self.menu.agregar_plato(Plato(dic_plato))
+            self.menu.agregar_plato(Plato(nombre_plato, precio_plato, plato_veg, cantidad_plato))
 
     def registrar_comensal(self):
         tipo = input("Subsidio (alto/medio/bajo/ninguno): ")
@@ -49,13 +48,16 @@ class SistemaNutriUTP:
         self.crear_menu()
 
         while True:
-            print("\n1. Comprar plato")
-            print("2. Ver reporte")
-            print("3. Salir")
+            print("1. Mostrar platos")
+            print("2. Comprar plato")
+            print("3. Ver reporte")
+            print("4. Salir")
 
             op = input("Opción: ")
-
             if op == "1":
+                self.menu.mostrar()
+
+            elif op == "2":
                 comensal = self.registrar_comensal()
 
                 while True:
@@ -67,31 +69,36 @@ class SistemaNutriUTP:
                 preferencia = int(preferencia)
                 print("Lista de platos:\n")
                 platos = self.menu.seleccionar_opcion(preferencia)
-
-                try:
-                    id_plato = int(input("Seleccione su plato: "))
-                except ValueError:
-                    id_plato = 0
+                for id_mostrar, objeto_plato in platos.items():
+                    print(f"{id_mostrar}. {objeto_plato.descripcion_detallada()}")
                 
-                try:
-                    plato = platos.get(f"{id_plato}")
-                
-                    venta = self.procesador.generar_tiquete(comensal, plato)
+                if not platos:
+                    print("❌ No hay platos disponibles para esta preferencia.")
+                else:
 
-                    if venta:
-                        print(f"✔️ Compra realizada: {venta}")
-                    else:
-                        print("❌ Plato agotado")
-                except:
-                    print("❌ Plato no existente")
-            elif op == "2":
+                    try:
+                        id_plato = int(input("Seleccione su plato: "))
+                    except ValueError:
+                        id_plato = 0
+                
+                    try:
+                        plato = platos.get(f"{id_plato}")
+                        venta = self.procesador.generar_tiquete(comensal, plato)
+
+                        if venta:
+                            print(f"✔️ Compra realizada: {venta}")
+                        else:
+                            print("❌ Plato agotado")
+                    except:
+                        print("❌ Plato no existente")
+            elif op == "3":
                 ventas = self.procesador.validar_pago()
                 print("\n=== REPORTE ===")
                 for venta in ventas:
                     print(f"{venta['cliente']} -> {venta['plato']} (${venta['precio']})")
                 print(f"\nTOTAL: ${self.procesador._total}")
 
-            elif op == "3":
+            elif op == "4":
                 print("Saliendo...")
                 break
 

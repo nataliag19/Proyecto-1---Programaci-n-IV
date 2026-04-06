@@ -1,7 +1,7 @@
 from datetime import date
 class MenuDia:
-    def __init__(self, fecha):
-        self.fecha = fecha or date.today()
+    def __init__(self, fecha = date.today()):
+        self.fecha = fecha
         self._opciones = []
 
     def agregar_plato(self, plato):
