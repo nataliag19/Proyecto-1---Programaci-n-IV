@@ -24,4 +24,4 @@ class ProcesadorVenta:
         return venta
 
     def validar_pago(self):
-        return f"Ventas hechas hasta ahora:\n{self._ventas} \n mensaje para la tesorería."
+        return self._ventas

@@ -12,19 +12,38 @@ class SistemaNutriUTP:
         fecha = input("Fecha del menú: ")
         self.menu = MenuDia(fecha)
 
-        cantidad_platos_a_ingresar = int(input("Cantidad de platos: "))
+        cantidad_platos_a_ingresar = input("Cantidad de platos: ")
+
+        if cantidad_platos_a_ingresar.isdigit():
+            cantidad_platos_a_ingresar = int(cantidad_platos_a_ingresar)
+        else:
+            cantidad_platos_a_ingresar = 0 
+
+        if cantidad_platos_a_ingresar <= 0:
+            cantidad_platos_a_ingresar = 1
+        
         for _ in range(cantidad_platos_a_ingresar):
             nombre_plato = input("Nombre del plato: ")
-            precio_plato = float(input("Precio del plato: "))
+            precio_plato = input("Precio del plato: ")
+            try:
+                precio_plato = float(precio_plato)
+            except ValueError:
+                precio_plato = 1000.0
+            
             plato_veg = input("Es un plato vegetariano (si/no): ").lower() == "si"
-            cantidad_plato = int(input("Cantidad disponible de este plato: "))
+            cantidad_plato = input("Cantidad disponible de este plato: ")
+            try:
+                cantidad_plato = int(cantidad_plato)
+            except ValueError:
+                cantidad_plato = 1
+            
+            dic_plato = {'nombre': nombre_plato, 'precio': precio_plato, 'plato_veg':plato_veg, 'cantidad':cantidad_plato}
 
-            self.menu.agregar_plato(Plato(nombre_plato, precio_plato, plato_veg, cantidad_plato))
+            self.menu.agregar_plato(Plato(dic_plato))
 
     def registrar_comensal(self):
-        id_est = input("ID estudiante: ")
         tipo = input("Subsidio (alto/medio/bajo/ninguno): ")
-        return Comensal(id_est, tipo)
+        return Comensal(tipo)
 
     def ejecutar(self):
         self.crear_menu()
@@ -40,30 +59,33 @@ class SistemaNutriUTP:
                 comensal = self.registrar_comensal()
 
                 while True:
-                    preferencia = int(input("Ingrese su preferencia:\n 1. Estándar\n 2.Vegetariano\n"))
-                    if preferencia == 1 or preferencia == 2:
+                    preferencia = input("Ingrese su preferencia:\n 1. Estándar\n 2.Vegetariano\n")
+                    if preferencia == '1' or preferencia == '2':
                         break
                     else:
                         print("Ingrese una opción válida.\n")
-
+                preferencia = int(preferencia)
                 print("Lista de platos:\n")
-                platos = self.menu.seleccionar_opcion(preferencia - 1)
-                id_plato = int(input("Seleccione su plato: ")) - 1
-                plato = platos[f"{id_plato}"]
+                platos = self.menu.seleccionar_opcion(preferencia)
 
-                if not plato:
-                    print("❌ Opción inválida")
-                    continue
+                try:
+                    id_plato = int(input("Seleccione su plato: "))
+                except ValueError:
+                    id_plato = 0
+                
+                try:
+                    plato = platos.get(f"{id_plato}")
+                
+                    venta = self.procesador.generar_tiquete(comensal, plato)
 
-                venta = self.procesador.generar_tiquete(comensal, plato)
-
-                if venta:
-                    print(f"✔️ Compra realizada: {venta}")
-                else:
-                    print("❌ Plato agotado")
-
+                    if venta:
+                        print(f"✔️ Compra realizada: {venta}")
+                    else:
+                        print("❌ Plato agotado")
+                except:
+                    print("❌ Plato no existente")
             elif op == "2":
-                ventas = self.procesador.reporte()
+                ventas = self.procesador.validar_pago()
                 print("\n=== REPORTE ===")
                 for venta in ventas:
                     print(f"{venta['cliente']} -> {venta['plato']} (${venta['precio']})")

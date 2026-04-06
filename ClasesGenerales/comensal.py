@@ -1,7 +1,11 @@
 class Comensal:
-    def __init__(self, id_estudiante, tipo_subsidio):
-        self.id_estudiante = id_estudiante
-        self.tipo_subsidio = tipo_subsidio
+    
+    _contador_comensal = 0
+
+    def __init__(self, tipo_subsidio):
+        Comensal._contador_comensal += 1
+        self.id_estudiante = Comensal._contador_comensal
+        self.tipo_subsidio = tipo_subsidio or ""
 
     def calcular_descuento(self, precio):
         if self.tipo_subsidio == "alto":
