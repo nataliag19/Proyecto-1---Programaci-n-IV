@@ -36,10 +36,15 @@ class SistemaNutriUTP:
                 cantidad_plato = int(cantidad_plato)
             except ValueError:
                 cantidad_plato = 1
-            
-            dic_plato = {'nombre': nombre_plato, 'precio': precio_plato, 'plato_veg':plato_veg, 'cantidad':cantidad_plato}
 
-            self.menu.agregar_plato(Plato(dic_plato))
+            self.menu.agregar_plato(
+                Plato(
+                    nombre_plato,
+                    precio_plato,
+                    plato_veg,
+                    cantidad_plato
+                    )
+)
 
     def registrar_comensal(self):
         tipo = input("\nSubsidio (alto/medio/bajo/ninguno): ")
